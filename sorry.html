@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>เค้าขอโทษนะ</title>
+  <style>
+    body {
+      background-color: #fff0f0;
+      font-family: 'Prompt', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .text {
+      font-size: 1.5rem;
+      line-height: 2.2rem;
+      white-space: pre-wrap;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      background-color: #333;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
+    }
+
+    .cat-img {
+      width: 200px;
+      margin-top: 40px;
+      animation: floatUp 5s ease-in-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    #playBtn {
+      background: #ff9aa2;
+      color: #fff;
+      font-size: 1rem;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+
+    #playBtn:hover {
+      background: #ff7b8b;
+    }
+
+    #forgive-buttons {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    .forgive-btn {
+      position: absolute;
+      background: #ffe0f0;
+      border: 2px solid #ff7eb9;
+      color: #d63384;
+      font-weight: bold;
+      border-radius: 16px;
+      padding: 10px 16px;
+      font-size: 20px;
+      pointer-events: auto;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1s ease;
+      transition: transform 0.2s;
+      width: 180px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .forgive-btn:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+  <div id="forgive-buttons"></div>
+
+  <button id="playBtn">▶️ เล่นเพลงง้อแฟน</button>
+
+  <div class="text" id="text"></div><div class="cursor"></div>
+
+  <img class="cat-img" src="th.jpg" alt="แมวเศร้า"/>
+
+  <div id="player" style="display:none;"></div>
+
+  <script>
+    const message = `เค้าขอโทษนะที่วันนี้ทำตัวเป็นหมาที่นิสัยไม่ดีกับเธอ 
+คำพูดของเค้าคงทำให้เธอรู้สึกไม่ดี 
+เค้าก็งงกับตัวเองเหมือนกันว่าทำไปทำไม ตัดหางตัวเองทิ้งดีมั้ยเนี้ย หมั่นไส้ตัวเอง
+
+แต่ก็นั้นแหละ เค้าใช้วิชาที่ครูเคยสอนมาเขียนหน้าเว็ปให้เธอนะ 
+อาจจะไม่ทำให้หายงอนเค้าได้ 
+แต่อย่างน้อยก็อยากให้รู้ว่าเค้าตั้งใจทำเพื่อมาง้อมากนะTT
+
+อะไรที่ทำให้รู้สึกไม่ดี โบ้ขอโทษนะคะ
+จะเป็นไปได้มั้ยที่เค้าจะง้อเธอให้หายได้ 
+วันนี้รู้สึกผิดจริงๆนะ คำพูดเค้า ถึงจะไม่มีอะไรแฝง 
+แต่มันหยาบกระด้างเกินไป ไม่แปลกที่เธอจะรู้สึกงั้น
+บางที่ก็ทำให้เบบี้คงรู้สึกเศร้า เค้าก็คงต้องขอโทษจริงๆจากใจนะ มีอะไรอยากให้เค้าทำเพื่อให้เธอหาย เค้าเต็มใจที่จะทำนะ
+เพราะเค้ารักเธอมาก ไม่อยากเสียเธอไปเลย ถ้าให้เสียเธอไป ยอมระเบิดโลกทิ้งและลักพาตัวเธอมา คงง่ายกว่า
+ล้อเล่นนะ555
+แต่ก็นั้นแหละ โค้ดที่เราทำตอนนี้ มันมีความยาวอยู่130บรรทัด อาจจะดูเยอะ มันก็เยอะจริงๆนั้นแหละ เค้าก็ให้แชทช่วยประมมวลด้วยว่ามีอะไรที่ต้องแก้มั้ย แต่โดยร่วม 
+ทั้งหมดเป็นของเค้าที่ทำเพื่อเธอเอง<3  
+
+เค้าขอโทษน้า ให้อภัยหมาเด่กตัวนี้ได้มั้ยครับTT`;
+
+    let i = 0;
+    const speed = 50;
+    function typeWriter() {
+      if (i < message.length) {
+        document.getElementById("text").textContent += message.charAt(i);
+        i++;
+        setTimeout(typeWriter, speed);
+      }
+    }
+
+    const forgiveContainer = document.getElementById("forgive-buttons");
+    const buttons = [];
+    const btnWidth = 180;
+    const btnHeight = 60;
+
+    function isOverlap(x, y) {
+      return buttons.some(btn => {
+        return !(x + btnWidth < btn.x || x > btn.x + btnWidth || y + btnHeight < btn.y || y > btn.y + btnHeight);
+      });
+    }
+
+    function createForgiveButton() {
+      const btn = document.createElement("button");
+      btn.className = "forgive-btn";
+      btn.textContent = "ให้อภัยแล้วค่ะคนเก่ง 💖";
+
+      let x, y;
+      let tries = 0;
+      do {
+        x = Math.random() * (window.innerWidth - btnWidth);
+        y = Math.random() * (window.innerHeight - btnHeight);
+        tries++;
+        if (tries > 100) break;
+      } while (isOverlap(x, y));
+
+      btn.style.left = `${x}px`;
+      btn.style.top = `${y}px`;
+      btn.style.width = `${btnWidth}px`;
+      btn.style.height = `${btnHeight}px`;
+      btn.style.fontSize = '20px';
+
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        forgiveContainer.removeChild(btn);
+        const index = buttons.findIndex(b => b.x === x && b.y === y);
+        if (index !== -1) buttons.splice(index, 1);
+      };
+
+      forgiveContainer.appendChild(btn);
+      buttons.push({ x, y });
+    }
+
+    window.onload = () => {
+      typeWriter();
+      for(let j=0; j<3; j++){
+        createForgiveButton();
+      }
+    }
+
+    setInterval(createForgiveButton, 10000);
+
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: 'taaT4pC-jnc',
+        playerVars: {
+          autoplay: 0,
+          loop: 1,
+          playlist: 'taaT4pC-jnc'
+        }
+      });
+    }
+
+    document.getElementById("playBtn").addEventListener("click", function () {
+      if (player) {
+        player.playVideo();
+        this.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
